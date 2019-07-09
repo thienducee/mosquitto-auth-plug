@@ -1,0 +1,28 @@
+# Place your local configuration in /etc/mosquitto/conf.d/
+#
+# A full description of the configuration file is at
+# /usr/share/doc/mosquitto/examples/mosquitto.conf.example
+
+pid_file /var/run/mosquitto.pid
+
+persistence true
+persistence_file mosquitto.db
+persistence_location /var/lib/mosquitto/
+
+#log_type debug
+#log_timestamp true
+#connection_messages true
+#log_dest file /var/log/mosquitto/mosquitto.log
+
+#include_dir /etc/mosquitto/conf.d
+auth_plugin /etc/mosquitto/plugin/auth-plug.so
+auth_opt_backends sqlite
+auth_opt_psk_database sqlite
+listener 8885
+psk_hint hint1
+tls_version tlsv1.2
+use_identity_as_username true
+
+auth_opt_dbpath /etc/mosquitto/psk_db.sqlite
+auth_opt_sqliteuserquery SELECT psk FROM users WHERE username = ?1 
+#SELECT psk FROM users WHERE username = '%s'
