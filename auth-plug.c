@@ -769,7 +769,12 @@ int mosquitto_auth_psk_key_get(void *userdata, const char *hint, const char *ide
 	for (bep = ud->be_list; bep && *bep; bep++) {
 		struct backend_p *b = *bep;
 		if (!strcmp(database, b->name)) {
-			rc = b->getuser(b->conf, username, NULL, &psk_key);
+			// rc = b->getuser(b->conf, username, NULL, &psk_key);
+#if MOSQ_AUTH_PLUGIN_VERSION >=3	
+		rc = b->getuser(b->conf, username, NULL, &psk_key, mosquitto_client_id(client));
+#else
+		rc = b->getuser(b->conf, username, NULL, &psk_key, NULL);
+#endif
 			break;
 		}
 
